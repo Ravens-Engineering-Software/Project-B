@@ -1,3 +1,6 @@
+
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -41,7 +44,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        frequencyBox = new javax.swing.JComboBox();
         incomeSourceField = new javax.swing.JTextField();
         incomeAmountField = new javax.swing.JTextField();
         expencesPanel = new javax.swing.JPanel();
@@ -80,20 +83,20 @@ public class ProjectBGUI extends javax.swing.JFrame {
         incomeTable.setAutoCreateRowSorter(true);
         incomeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Example",  new Double(10.25),  new Double(41.0),  new Double(492.0)},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"Example", "Weekly",  new Double(50.0)},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Income Name", "$ Per Week", "$ Per Month", "$ Per Year"
+                "Income Name", "Frequency", "$ Value"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -124,16 +127,22 @@ public class ProjectBGUI extends javax.swing.JFrame {
 
         jLabel5.setText("Ammount:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Daily", "Weekly", "Bi-Weekly", "Monthly", "Bi-Monthly", "Yearly" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        frequencyBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Daily", "Weekly", "Bi-Weekly", "Monthly", "Bi-Monthly", "Yearly" }));
+        frequencyBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                frequencyBoxActionPerformed(evt);
             }
         });
 
         incomeSourceField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 incomeSourceFieldActionPerformed(evt);
+            }
+        });
+
+        incomeAmountField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                incomeAmountFieldActionPerformed(evt);
             }
         });
 
@@ -160,7 +169,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
                                     .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(incomeSourceField)
                                         .addComponent(incomeAmountField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(frequencyBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 32, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -176,7 +185,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(frequencyBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -199,11 +208,13 @@ public class ProjectBGUI extends javax.swing.JFrame {
         );
         incomePanelLayout.setVerticalGroup(
             incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(incomeTableScroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, incomePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(200, 200, 200))
+            .addGroup(incomePanelLayout.createSequentialGroup()
+                .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("Income", incomePanel);
@@ -253,16 +264,21 @@ public class ProjectBGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addIncomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIncomeButtonActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) incomeTable.getModel();
+        model.addRow(new Object[]{(Object)incomeSourceField.getText(),frequencyBox.getSelectedItem(),(Object)(Double.valueOf(incomeAmountField.getText()))});
     }//GEN-LAST:event_addIncomeButtonActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void frequencyBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frequencyBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_frequencyBoxActionPerformed
 
     private void incomeSourceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incomeSourceFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_incomeSourceFieldActionPerformed
+
+    private void incomeAmountFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incomeAmountFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_incomeAmountFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -304,6 +320,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
     private javax.swing.JPanel addIncomePanel;
     private javax.swing.JLabel addIncomeTitle;
     private javax.swing.JPanel expencesPanel;
+    private javax.swing.JComboBox frequencyBox;
     private javax.swing.JPanel fundsPanel;
     private javax.swing.JTextField incomeAmountField;
     private javax.swing.JPanel incomePanel;
@@ -311,7 +328,6 @@ public class ProjectBGUI extends javax.swing.JFrame {
     private javax.swing.JTable incomeTable;
     private javax.swing.JScrollPane incomeTableScroll;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

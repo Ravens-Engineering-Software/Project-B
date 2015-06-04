@@ -120,11 +120,14 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="incomeTableScroll" alignment="1" pref="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="addIncomePanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="incomeTableScroll" min="-2" pref="359" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -141,27 +144,21 @@
                   <Properties>
                     <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="4" rowCount="4">
+                      <Table columnCount="3" rowCount="4">
                         <Column editable="false" title="Income Name" type="java.lang.String">
                           <Data value="Example"/>
                           <Data value="null"/>
                           <Data value="null"/>
                           <Data value="null"/>
                         </Column>
-                        <Column editable="false" title="$ Per Week" type="java.lang.Double">
-                          <Data value="10.25"/>
+                        <Column editable="false" title="Frequency" type="java.lang.String">
+                          <Data value="Weekly"/>
                           <Data value="null"/>
                           <Data value="null"/>
                           <Data value="null"/>
                         </Column>
-                        <Column editable="false" title="$ Per Month" type="java.lang.Double">
-                          <Data value="41.0"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
-                          <Data value="null"/>
-                        </Column>
-                        <Column editable="false" title="$ Per Year" type="java.lang.Double">
-                          <Data value="492.0"/>
+                        <Column editable="false" title="$ Value" type="java.lang.Double">
+                          <Data value="50.0"/>
                           <Data value="null"/>
                           <Data value="null"/>
                           <Data value="null"/>
@@ -206,7 +203,7 @@
                                                   <Component id="incomeSourceField" max="32767" attributes="0"/>
                                                   <Component id="incomeAmountField" min="-2" pref="147" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
+                                              <Component id="frequencyBox" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -230,7 +227,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="frequencyBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -276,7 +273,7 @@
                     <Property name="text" type="java.lang.String" value="Ammount:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox1">
+                <Component class="javax.swing.JComboBox" name="frequencyBox">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="6">
@@ -290,7 +287,7 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox1ActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frequencyBoxActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="incomeSourceField">
@@ -299,6 +296,9 @@
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="incomeAmountField">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="incomeAmountFieldActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

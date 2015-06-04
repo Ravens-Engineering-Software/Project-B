@@ -33,11 +33,17 @@ public class ProjectBGUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTabbedPane = new javax.swing.JTabbedPane();
         incomePanel = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        incomeTableScroll = new javax.swing.JScrollPane();
+        incomeTable = new javax.swing.JTable();
+        addIncomePanel = new javax.swing.JPanel();
+        addIncomeTitle = new javax.swing.JLabel();
+        addIncomeButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        incomeSourceField = new javax.swing.JTextField();
+        incomeAmountField = new javax.swing.JTextField();
         expencesPanel = new javax.swing.JPanel();
         fundsPanel = new javax.swing.JPanel();
 
@@ -71,50 +77,133 @@ public class ProjectBGUI extends javax.swing.JFrame {
             .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jLabel2.setText("Add Income: $");
+        incomeTable.setAutoCreateRowSorter(true);
+        incomeTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Example",  new Double(10.25),  new Double(41.0),  new Double(492.0)},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Income Name", "$ Per Week", "$ Per Month", "$ Per Year"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
-        jButton2.setText("Add");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        incomeTableScroll.setViewportView(incomeTable);
+
+        addIncomePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        addIncomeTitle.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        addIncomeTitle.setText("<html><u>Add Income:");
+
+        addIncomeButton.setText("Add");
+        addIncomeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                addIncomeButtonActionPerformed(evt);
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        jLabel3.setText("Source name:");
+
+        jLabel4.setText("Frequency:");
+
+        jLabel5.setText("Ammount:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Daily", "Weekly", "Bi-Weekly", "Monthly", "Bi-Monthly", "Yearly" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
         });
-        jScrollPane1.setViewportView(jList1);
+
+        incomeSourceField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                incomeSourceFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout addIncomePanelLayout = new javax.swing.GroupLayout(addIncomePanel);
+        addIncomePanel.setLayout(addIncomePanelLayout);
+        addIncomePanelLayout.setHorizontalGroup(
+            addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addIncomePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addIncomePanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addIncomeButton))
+                    .addGroup(addIncomePanelLayout.createSequentialGroup()
+                        .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addIncomeTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(addIncomePanelLayout.createSequentialGroup()
+                                .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(incomeSourceField)
+                                        .addComponent(incomeAmountField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 32, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        addIncomePanelLayout.setVerticalGroup(
+            addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(addIncomePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(addIncomeTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(incomeSourceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(incomeAmountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addComponent(addIncomeButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout incomePanelLayout = new javax.swing.GroupLayout(incomePanel);
         incomePanel.setLayout(incomePanelLayout);
         incomePanelLayout.setHorizontalGroup(
             incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(incomePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(4, 4, 4)
+                .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         incomePanelLayout.setVerticalGroup(
             incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(incomePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(incomePanelLayout.createSequentialGroup()
-                        .addGroup(incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(incomeTableScroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, incomePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(200, 200, 200))
         );
 
         jTabbedPane.addTab("Income", incomePanel);
@@ -123,7 +212,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         expencesPanel.setLayout(expencesPanelLayout);
         expencesPanelLayout.setHorizontalGroup(
             expencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGap(0, 580, Short.MAX_VALUE)
         );
         expencesPanelLayout.setVerticalGroup(
             expencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,7 +225,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         fundsPanel.setLayout(fundsPanelLayout);
         fundsPanelLayout.setHorizontalGroup(
             fundsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGap(0, 580, Short.MAX_VALUE)
         );
         fundsPanelLayout.setVerticalGroup(
             fundsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,9 +252,17 @@ public class ProjectBGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void addIncomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIncomeButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_addIncomeButtonActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void incomeSourceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incomeSourceFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_incomeSourceFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,19 +300,25 @@ public class ProjectBGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addIncomeButton;
+    private javax.swing.JPanel addIncomePanel;
+    private javax.swing.JLabel addIncomeTitle;
     private javax.swing.JPanel expencesPanel;
     private javax.swing.JPanel fundsPanel;
+    private javax.swing.JTextField incomeAmountField;
     private javax.swing.JPanel incomePanel;
+    private javax.swing.JTextField incomeSourceField;
+    private javax.swing.JTable incomeTable;
+    private javax.swing.JScrollPane incomeTableScroll;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JList jList1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }

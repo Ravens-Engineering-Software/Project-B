@@ -1,4 +1,7 @@
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -12,12 +15,16 @@ import javax.swing.table.DefaultTableModel;
  * @author S067232588
  */
 public class ProjectBGUI extends javax.swing.JFrame {
+    ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+    Runnable r = new Updater();
 
     /**
      * Creates new form ProjectBGUI
      */
     public ProjectBGUI() {
         initComponents();
+        
+        service.scheduleAtFixedRate(r, 0, 1, TimeUnit.SECONDS);
     }
 
     /**
@@ -47,6 +54,8 @@ public class ProjectBGUI extends javax.swing.JFrame {
         frequencyBox = new javax.swing.JComboBox();
         incomeSourceField = new javax.swing.JTextField();
         incomeAmountField = new javax.swing.JTextField();
+        addIncomeErrorLabel = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         expencesPanel = new javax.swing.JPanel();
         fundsPanel = new javax.swing.JPanel();
 
@@ -83,20 +92,17 @@ public class ProjectBGUI extends javax.swing.JFrame {
         incomeTable.setAutoCreateRowSorter(true);
         incomeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Example", "Weekly",  new Double(50.0)},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {"Example", "Weekly",  new Double(50.0),  new Boolean(true)}
             },
             new String [] {
-                "Income Name", "Frequency", "$ Value"
+                "Income Name", "Frequency", "$ Value", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -146,6 +152,9 @@ public class ProjectBGUI extends javax.swing.JFrame {
             }
         });
 
+        addIncomeErrorLabel.setForeground(new java.awt.Color(255, 0, 51));
+        addIncomeErrorLabel.setText("jLabel2");
+
         javax.swing.GroupLayout addIncomePanelLayout = new javax.swing.GroupLayout(addIncomePanel);
         addIncomePanel.setLayout(addIncomePanelLayout);
         addIncomePanelLayout.setHorizontalGroup(
@@ -154,7 +163,8 @@ public class ProjectBGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addIncomePanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addIncomeErrorLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addIncomeButton))
                     .addGroup(addIncomePanelLayout.createSequentialGroup()
                         .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,19 +201,28 @@ public class ProjectBGUI extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(incomeAmountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
-                .addComponent(addIncomeButton)
+                .addGroup(addIncomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addIncomeButton)
+                    .addComponent(addIncomeErrorLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jButton2.setText("Delete");
 
         javax.swing.GroupLayout incomePanelLayout = new javax.swing.GroupLayout(incomePanel);
         incomePanel.setLayout(incomePanelLayout);
         incomePanelLayout.setHorizontalGroup(
             incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(incomePanelLayout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(incomePanelLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2))
+                    .addGroup(incomePanelLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         incomePanelLayout.setVerticalGroup(
@@ -213,8 +232,10 @@ public class ProjectBGUI extends javax.swing.JFrame {
                 .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(200, 200, 200))
             .addGroup(incomePanelLayout.createSequentialGroup()
-                .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jButton2)
+                .addContainerGap())
         );
 
         jTabbedPane.addTab("Income", incomePanel);
@@ -227,7 +248,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         );
         expencesPanelLayout.setVerticalGroup(
             expencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
+            .addGap(0, 387, Short.MAX_VALUE)
         );
 
         jTabbedPane.addTab("Expences", expencesPanel);
@@ -240,7 +261,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         );
         fundsPanelLayout.setVerticalGroup(
             fundsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
+            .addGap(0, 387, Short.MAX_VALUE)
         );
 
         jTabbedPane.addTab("Funds Breakdown", fundsPanel);
@@ -256,8 +277,9 @@ public class ProjectBGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -265,6 +287,11 @@ public class ProjectBGUI extends javax.swing.JFrame {
 
     private void addIncomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIncomeButtonActionPerformed
         DefaultTableModel model = (DefaultTableModel) incomeTable.getModel();
+        try{
+            double var = Double.valueOf(incomeAmountField.getText());
+        } catch(java.lang.NumberFormatException e) {
+            addIncomeErrorLabel.setText("Invalid Input");
+        }
         model.addRow(new Object[]{(Object)incomeSourceField.getText(),frequencyBox.getSelectedItem(),(Object)(Double.valueOf(incomeAmountField.getText()))});
     }//GEN-LAST:event_addIncomeButtonActionPerformed
 
@@ -280,6 +307,13 @@ public class ProjectBGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_incomeAmountFieldActionPerformed
 
+    private class Updater implements Runnable {
+        @Override
+        public void run() {
+            
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -317,6 +351,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addIncomeButton;
+    private javax.swing.JLabel addIncomeErrorLabel;
     private javax.swing.JPanel addIncomePanel;
     private javax.swing.JLabel addIncomeTitle;
     private javax.swing.JPanel expencesPanel;
@@ -328,6 +363,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
     private javax.swing.JTable incomeTable;
     private javax.swing.JScrollPane incomeTableScroll;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

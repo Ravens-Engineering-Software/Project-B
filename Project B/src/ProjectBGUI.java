@@ -17,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
 public class ProjectBGUI extends javax.swing.JFrame {
     ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
     Runnable r = new Updater();
+    boolean errorTimer = false;
+    int timerCount = 3; 
 
     /**
      * Creates new form ProjectBGUI
@@ -153,7 +155,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         });
 
         addIncomeErrorLabel.setForeground(new java.awt.Color(255, 0, 51));
-        addIncomeErrorLabel.setText("jLabel2");
+        addIncomeErrorLabel.setText(" ");
 
         javax.swing.GroupLayout addIncomePanelLayout = new javax.swing.GroupLayout(addIncomePanel);
         addIncomePanel.setLayout(addIncomePanelLayout);
@@ -291,6 +293,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
             double var = Double.valueOf(incomeAmountField.getText());
         } catch(java.lang.NumberFormatException e) {
             addIncomeErrorLabel.setText("Invalid Input");
+            errorTimer = true;
         }
         model.addRow(new Object[]{(Object)incomeSourceField.getText(),frequencyBox.getSelectedItem(),(Object)(Double.valueOf(incomeAmountField.getText()))});
     }//GEN-LAST:event_addIncomeButtonActionPerformed
@@ -310,7 +313,14 @@ public class ProjectBGUI extends javax.swing.JFrame {
     private class Updater implements Runnable {
         @Override
         public void run() {
-            
+            if (errorTimer == true){
+                if (timerCount <= 0){
+                    addIncomeErrorLabel.setText(" ");
+                    timerCount = 5;
+                } else {
+                    timerCount--;
+                }
+            }
         }
     }
     

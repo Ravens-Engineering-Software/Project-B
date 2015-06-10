@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
  * @author S067232588
  */
 public class ProjectBGUI extends javax.swing.JFrame {
+    FileManager fileManager = new FileManager(); 
     ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
     Runnable r = new Updater();
     boolean errorTimer = false;
@@ -58,6 +59,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         incomeAmountField = new javax.swing.JTextField();
         addIncomeErrorLabel = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         expencesPanel = new javax.swing.JPanel();
         fundsPanel = new javax.swing.JPanel();
 
@@ -211,20 +213,27 @@ public class ProjectBGUI extends javax.swing.JFrame {
 
         jButton2.setText("Delete");
 
+        jButton3.setText("Save");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout incomePanelLayout = new javax.swing.GroupLayout(incomePanel);
         incomePanel.setLayout(incomePanelLayout);
         incomePanelLayout.setHorizontalGroup(
             incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(incomePanelLayout.createSequentialGroup()
-                .addGroup(incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(4, 4, 4)
+                .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addGroup(incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(incomePanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2))
-                    .addGroup(incomePanelLayout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                        .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         incomePanelLayout.setVerticalGroup(
@@ -236,7 +245,9 @@ public class ProjectBGUI extends javax.swing.JFrame {
             .addGroup(incomePanelLayout.createSequentialGroup()
                 .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jButton2)
+                .addGroup(incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addContainerGap())
         );
 
@@ -310,6 +321,11 @@ public class ProjectBGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_incomeAmountFieldActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) incomeTable.getModel();
+        fileManager.fileWrite(model);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     private class Updater implements Runnable {
         @Override
         public void run() {
@@ -374,6 +390,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane incomeTableScroll;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

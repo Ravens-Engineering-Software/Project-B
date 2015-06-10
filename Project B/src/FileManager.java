@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,7 +31,7 @@ public class FileManager {
         if (string == null) {
             return;
         }
-        for (String a : string.split("\\.")) {
+        for (String a : string.split("\n")) {
             for (String s : a.split("\\s+")) {
 
                 if (j == 0) {
@@ -47,7 +48,23 @@ public class FileManager {
                 }
                 j++;
             }
+            i++;
         }
 
+    }
+    
+    
+    void fileWrite(DefaultTableModel model) {
+        StringBuilder data = new StringBuilder();
+        
+        for (int row=0; row<model.getRowCount(); row++){
+            for (int column=0; column<model.getColumnCount(); column++){
+                data.append(model.getValueAt(row, column));
+                data.append(" ");
+            }
+            data.append("\n");
+        }
+        String unencryptedString = data.toString();
+        
     }
 }

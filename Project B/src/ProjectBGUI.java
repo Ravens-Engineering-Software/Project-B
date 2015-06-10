@@ -210,6 +210,11 @@ public class ProjectBGUI extends javax.swing.JFrame {
         );
 
         jButton2.setText("Delete");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout incomePanelLayout = new javax.swing.GroupLayout(incomePanel);
         incomePanel.setLayout(incomePanelLayout);
@@ -315,6 +320,14 @@ public class ProjectBGUI extends javax.swing.JFrame {
     private void incomeAmountFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incomeAmountFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_incomeAmountFieldActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) incomeTable.getModel();
+        for(int i =0; i < model.getRowCount();i++){
+            if ((Boolean)(model.getValueAt(i, 3)) == true)
+                model.removeRow(i);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private class Updater implements Runnable {
         @Override

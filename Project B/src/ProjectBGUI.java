@@ -291,9 +291,15 @@ public class ProjectBGUI extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) incomeTable.getModel();
         try{
             double var = Double.valueOf(incomeAmountField.getText());
-        } catch(java.lang.NumberFormatException e) {
+            if ("".equals(incomeSourceField.getText())){
+                addIncomeErrorLabel.setText("Invalid Input");
+                errorTimer = true;
+                return;
+            }
+        } catch(NumberFormatException e) {
             addIncomeErrorLabel.setText("Invalid Input");
             errorTimer = true;
+            return;
         }
         model.addRow(new Object[]{(Object)incomeSourceField.getText(),frequencyBox.getSelectedItem(),(Object)(Double.valueOf(incomeAmountField.getText()))});
     }//GEN-LAST:event_addIncomeButtonActionPerformed

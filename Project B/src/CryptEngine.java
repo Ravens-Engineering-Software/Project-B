@@ -22,6 +22,12 @@ public class CryptEngine {
     private static int keySize = 128;
     private byte[] ivBytes;
  
+    public byte[] getIV(){
+    	return ivBytes;
+    }
+    public void setIV(byte[] val){
+    	ivBytes = val;
+    }
     public String encrypt(String plainText, String pass) throws Exception {  
          
         //get salt
@@ -36,7 +42,7 @@ public class CryptEngine {
                 pswdIterations,
                 keySize
                 );
- 
+        
         SecretKey secretKey = factory.generateSecret(spec);
         SecretKeySpec secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
  
@@ -45,13 +51,15 @@ public class CryptEngine {
         cipher.init(Cipher.ENCRYPT_MODE, secret);
         AlgorithmParameters params = cipher.getParameters();
         ivBytes = params.getParameterSpec(IvParameterSpec.class).getIV();
+        System.out.println("ivBytes=" + new String(ivBytes));
         byte[] encryptedTextBytes = cipher.doFinal(plainText.getBytes("UTF-8"));
         return DatatypeConverter.printBase64Binary(encryptedTextBytes);
     }
  
     @SuppressWarnings("static-access")
     public String decrypt(String encryptedText,String pass) throws Exception {
- 
+    	 if (ivBytes == null){return null;} // Can't decrypt
+    	salt = generateSalt(); 
         byte[] saltBytes = salt.getBytes("UTF-8");
         byte[] encryptedTextBytes = DatatypeConverter.parseBase64Binary(encryptedText);
  
@@ -63,12 +71,25 @@ public class CryptEngine {
                 pswdIterations,
                 keySize
                 );
- 
+
+        
+        
         SecretKey secretKey = factory.generateSecret(spec);
         SecretKeySpec secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
  
+
+        
         // Decrypt the message
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+       
+        /*
+        //if (ivBytes == null){ // Get the ivBytes if they don't do the thing
+        	cipher.init(Cipher.ENCRYPT_MODE, secret);
+            AlgorithmParameters params = cipher.getParameters();
+            ivBytes = params.getParameterSpec(IvParameterSpec.class).getIV();
+        //}
+         */
+        System.out.println("ivBytes=" + new String(ivBytes));
         cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(ivBytes));
      
  
@@ -78,9 +99,11 @@ public class CryptEngine {
             return new String(decryptedTextBytes);
         } catch (IllegalBlockSizeException e) {
             //e.printStackTrace();
+        	System.err.println("IllegalBlockSizeException");
             return null;
         } catch (BadPaddingException e) {
             //e.printStackTrace();
+        	System.err.println("IllegalBlockSizeException");
             return null;
         }
  

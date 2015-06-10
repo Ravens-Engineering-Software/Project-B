@@ -6,13 +6,31 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import javax.swing.JOptionPane;
+import javax.xml.bind.DatatypeConverter;
 
 
 public class CryptFile {
 	private String cachedPassword = null;
 	private CryptEngine crypt = new CryptEngine();
+	
+	public void clearCache(){
+		cachedPassword = null;
+		crypt.setIV(null);
+	}
+	
 	public String readEncryptedString(String filename){
-		String encryptedString  = readFile(filename);
+		if (crypt.getIV() == null){
+			String ivstr = readFile(filename+".iv");
+			if (ivstr == null){
+				JOptionPane.showMessageDialog(null,"iv file not found.","Error", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}else{
+				crypt.setIV(DatatypeConverter.parseBase64Binary(ivstr));
+
+			}
+		
+		}
+		String encryptedString = readFile(filename);
 		if (encryptedString==null){return null;}
 		String decryptedString = null;
 		
@@ -46,7 +64,7 @@ public class CryptFile {
 	}
 	
 	public boolean writeEncryptedString(String filename,String data){
-		String encryptedString  = null;
+		String encryptedString = null;
 		try{
 			if (cachedPassword == null){
 				boolean needInput = true;
@@ -55,7 +73,7 @@ public class CryptFile {
 					if (input == null){
 						needInput = false;
 					}else if (input.length()>4){
-						encryptedString = crypt.encrypt(encryptedString,input);
+						encryptedString = crypt.encrypt(data,input);
 						if (encryptedString == null){
 							JOptionPane.showMessageDialog(null,"The password you entered is incorrect.","Error", JOptionPane.ERROR_MESSAGE);
 						}else{
@@ -72,7 +90,8 @@ public class CryptFile {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return writeFile(filename,encryptedString);
+		//Will the user remember the IV? Nooooooo
+		return writeFile(filename+".iv",DatatypeConverter.printBase64Binary(crypt.getIV())) && writeFile(filename,encryptedString);
 	}
 	
 	

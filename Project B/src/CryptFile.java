@@ -22,7 +22,7 @@ public class CryptFile {
 		if (crypt.getIV() == null){
 			String ivstr = readFile(filename+".iv");
 			if (ivstr == null){
-				JOptionPane.showMessageDialog(null,"iv file not found.","Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"iv file not found. You're data can't be recovered without this.","Error", JOptionPane.ERROR_MESSAGE);
 				return null;
 			}else{
 				crypt.setIV(DatatypeConverter.parseBase64Binary(ivstr));

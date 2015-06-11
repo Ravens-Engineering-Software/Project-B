@@ -1,10 +1,4 @@
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -56,6 +50,7 @@ public class FileManager {
     
     void fileWrite(DefaultTableModel model) {
         StringBuilder data = new StringBuilder();
+        CryptFile cryptFile = new CryptFile();
         
         for (int row=0; row<model.getRowCount(); row++){
             for (int column=0; column<model.getColumnCount(); column++){
@@ -65,6 +60,6 @@ public class FileManager {
             data.append("\n");
         }
         String unencryptedString = data.toString();
-        
+        cryptFile.writeEncryptedString("incomes.txt", unencryptedString);
     }
 }

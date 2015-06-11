@@ -57,7 +57,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         incomeSourceField = new javax.swing.JTextField();
         incomeAmountField = new javax.swing.JTextField();
         addIncomeErrorLabel = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        deleteIncome = new javax.swing.JButton();
         expencesPanel = new javax.swing.JPanel();
         addExpensePanel = new javax.swing.JPanel();
         addExpenseTitle = new javax.swing.JLabel();
@@ -71,7 +71,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         addExpenseErrorLabel = new javax.swing.JLabel();
         expenseTableScroll = new javax.swing.JScrollPane();
         expenseTable = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
+        deleteExpense = new javax.swing.JButton();
         fundsPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -226,10 +226,10 @@ public class ProjectBGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton2.setText("Delete");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        deleteIncome.setText("Delete");
+        deleteIncome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                deleteIncomeActionPerformed(evt);
             }
         });
 
@@ -246,7 +246,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
                         .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, incomePanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                        .addComponent(deleteIncome)))
                 .addGap(11, 11, 11))
         );
         incomePanelLayout.setVerticalGroup(
@@ -258,7 +258,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(deleteIncome)
                 .addContainerGap())
         );
 
@@ -387,7 +387,12 @@ public class ProjectBGUI extends javax.swing.JFrame {
             expenseTable.getColumnModel().getColumn(3).setPreferredWidth(30);
         }
 
-        jButton3.setText("Delete");
+        deleteExpense.setText("Delete");
+        deleteExpense.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteExpenseActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout expencesPanelLayout = new javax.swing.GroupLayout(expencesPanel);
         expencesPanel.setLayout(expencesPanelLayout);
@@ -399,7 +404,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
                 .addGroup(expencesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(expencesPanelLayout.createSequentialGroup()
                         .addGap(228, 228, 228)
-                        .addComponent(jButton3))
+                        .addComponent(deleteExpense))
                     .addGroup(expencesPanelLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(expenseTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -415,7 +420,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
                     .addGroup(expencesPanelLayout.createSequentialGroup()
                         .addComponent(expenseTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(11, 11, 11)
-                        .addComponent(jButton3)))
+                        .addComponent(deleteExpense)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -483,7 +488,20 @@ public class ProjectBGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_incomeAmountFieldActionPerformed
 
     private void addExpenseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExpenseButtonActionPerformed
-        // TODO add your handling code here:
+DefaultTableModel model = (DefaultTableModel) expenseTable.getModel();
+        try{
+            double var = Double.valueOf(expenseAmountField.getText());
+            if ("".equals(expenseSourceField.getText())){
+                addExpenseErrorLabel.setText("Invalid Input");
+                errorTimer = true;
+                return;
+            }
+        } catch(NumberFormatException e) {
+            addExpenseErrorLabel.setText("Invalid Input");
+            errorTimer = true;
+            return;
+        }
+        model.addRow(new Object[]{(Object)expenseSourceField.getText(),frequencyBox.getSelectedItem(),(Object)(Double.valueOf(expenseAmountField.getText()))});
     }//GEN-LAST:event_addExpenseButtonActionPerformed
 
     private void frequencyExpenseBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frequencyExpenseBoxActionPerformed
@@ -497,13 +515,21 @@ public class ProjectBGUI extends javax.swing.JFrame {
     private void expenseAmountFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expenseAmountFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_expenseAmountFieldActionPerformed
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void deleteIncomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteIncomeActionPerformed
         DefaultTableModel model = (DefaultTableModel) incomeTable.getModel();
         for(int i =0; i < model.getRowCount();i++){
             if ((Boolean)(model.getValueAt(i, 3)) == true)
                 model.removeRow(i);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_deleteIncomeActionPerformed
+
+    private void deleteExpenseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteExpenseActionPerformed
+        DefaultTableModel model = (DefaultTableModel) expenseTable.getModel();
+        for(int i =0; i < model.getRowCount();i++){
+            if ((Boolean)(model.getValueAt(i, 3)) == true)
+                model.removeRow(i);
+        }
+    }//GEN-LAST:event_deleteExpenseActionPerformed
 
     private class Updater implements Runnable {
         @Override
@@ -563,6 +589,8 @@ public class ProjectBGUI extends javax.swing.JFrame {
     private javax.swing.JLabel addIncomeErrorLabel;
     private javax.swing.JPanel addIncomePanel;
     private javax.swing.JLabel addIncomeTitle;
+    private javax.swing.JButton deleteExpense;
+    private javax.swing.JButton deleteIncome;
     private javax.swing.JPanel expencesPanel;
     private javax.swing.JTextField expenseAmountField;
     private javax.swing.JTextField expenseSourceField;
@@ -577,8 +605,6 @@ public class ProjectBGUI extends javax.swing.JFrame {
     private javax.swing.JTable incomeTable;
     private javax.swing.JScrollPane incomeTableScroll;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

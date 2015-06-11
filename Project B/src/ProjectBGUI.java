@@ -129,6 +129,10 @@ public class ProjectBGUI extends javax.swing.JFrame {
             }
         });
         incomeTableScroll.setViewportView(incomeTable);
+        if (incomeTable.getColumnModel().getColumnCount() > 0) {
+            incomeTable.getColumnModel().getColumn(0).setPreferredWidth(110);
+            incomeTable.getColumnModel().getColumn(3).setPreferredWidth(30);
+        }
 
         addIncomePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -358,7 +362,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
                 {"Example", "Weekly",  new Double(50.0),  new Boolean(true)}
             },
             new String [] {
-                "Income Name", "Frequency", "$ Value", ""
+                "Expense Name", "Frequency", "$ Value", ""
             }
         ) {
             Class[] types = new Class [] {
@@ -377,6 +381,11 @@ public class ProjectBGUI extends javax.swing.JFrame {
             }
         });
         expenseTableScroll.setViewportView(expenseTable);
+        if (expenseTable.getColumnModel().getColumnCount() > 0) {
+            expenseTable.getColumnModel().getColumn(0).setPreferredWidth(155);
+            expenseTable.getColumnModel().getColumn(1).setPreferredWidth(110);
+            expenseTable.getColumnModel().getColumn(3).setPreferredWidth(30);
+        }
 
         jButton3.setText("Delete");
 

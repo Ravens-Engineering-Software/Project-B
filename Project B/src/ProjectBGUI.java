@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ProjectBGUI extends javax.swing.JFrame {
     ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+    FileManager fileManager = new FileManager();
     Runnable r = new Updater();
     boolean errorTimer = false;
     int timerCount = 3; 
@@ -58,6 +59,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         incomeAmountField = new javax.swing.JTextField();
         addIncomeErrorLabel = new javax.swing.JLabel();
         deleteIncome = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         expencesPanel = new javax.swing.JPanel();
         addExpensePanel = new javax.swing.JPanel();
         addExpenseTitle = new javax.swing.JLabel();
@@ -233,20 +235,28 @@ public class ProjectBGUI extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Save");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout incomePanelLayout = new javax.swing.GroupLayout(incomePanel);
         incomePanel.setLayout(incomePanelLayout);
         incomePanelLayout.setHorizontalGroup(
             incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(incomePanelLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(incomePanelLayout.createSequentialGroup()
-                        .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, incomePanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(deleteIncome)))
+                        .addGap(13, 13, 13)
+                        .addComponent(jButton2)
+                        .addGap(124, 124, 124)
+                        .addComponent(deleteIncome))
+                    .addComponent(incomeTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11))
         );
         incomePanelLayout.setVerticalGroup(
@@ -257,8 +267,10 @@ public class ProjectBGUI extends javax.swing.JFrame {
                     .addGroup(incomePanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(addIncomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(deleteIncome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(incomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteIncome)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
@@ -434,7 +446,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         );
         fundsPanelLayout.setVerticalGroup(
             fundsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 398, Short.MAX_VALUE)
+            .addGap(0, 404, Short.MAX_VALUE)
         );
 
         jTabbedPane.addTab("Funds Breakdown", fundsPanel);
@@ -531,6 +543,11 @@ DefaultTableModel model = (DefaultTableModel) expenseTable.getModel();
         }
     }//GEN-LAST:event_deleteExpenseActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) expenseTable.getModel();
+        fileManager.fileWrite(model);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private class Updater implements Runnable {
         @Override
         public void run() {
@@ -605,6 +622,7 @@ DefaultTableModel model = (DefaultTableModel) expenseTable.getModel();
     private javax.swing.JTable incomeTable;
     private javax.swing.JScrollPane incomeTableScroll;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

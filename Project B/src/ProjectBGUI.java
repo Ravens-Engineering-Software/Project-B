@@ -2,7 +2,19 @@
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.JScrollPane;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.JTable;
+import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JLabel;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -437,17 +449,106 @@ public class ProjectBGUI extends javax.swing.JFrame {
         );
 
         jTabbedPane.addTab("Expences", expencesPanel);
+        
+        JScrollPane cruncherScroller = new JScrollPane();
+        
+        JButton btnUpdate = new JButton("Import Income/Expences");
+        btnUpdate.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		//TODO: GET FROM OTHER TABLES
+        		//int lenx = expenseTable.getColumnCount();
+        		
+        		
+        		int leny = expenseTable.getRowCount();
+        		DefaultTableModel model = (DefaultTableModel) cruncherTable.getModel();
+        		TableModel incmodel = incomeTable.getModel();
+        		TableModel expmodel = expenseTable.getModel();
+        		//model.removeRow(i)
+        		for (int i=cruncherTable.getRowCount()-1;i>=0;i-=1){
+        			model.removeRow(i);
+        		}
+        		for (int i=0;i<leny;i+=1){
+        			System.out.print("Row #"+i+" ");
+        			//expenseTable.getModel().getValueAt(i, 0); //Names
+        			//expenseTable.getModel().getValueAt(i, 1); //Frequency
+        			//expenseTable.getModel().getValueAt(i, 2); //Value
+        			
+        			model.addRow(new Object[]{incmodel.getValueAt(i, 0),incmodel.getValueAt(i, 1),incmodel.getValueAt(i, 2),new Double(1337),new Boolean(true)});
+        		}
+        		for (int i=0;i<leny;i+=1){
+        			System.out.print("Row #"+i+" ");
+        			//expenseTable.getModel().getValueAt(i, 0); //Names
+        			//expenseTable.getModel().getValueAt(i, 1); //Frequency
+        			//expenseTable.getModel().getValueAt(i, 2); //Value
+        			model.addRow(new Object[]{expmodel.getValueAt(i, 0),expmodel.getValueAt(i, 1),new Double(((Double) expmodel.getValueAt(i, 2)).longValue() * -1),new Double(-1337),new Boolean(true)});
+        		}
+        		
+        		
+               
+        	}
+        });
+        
+        JLabel Thing = new JLabel("You currently have a profit of $1337 this month");
+        
+        calculateButt = new JButton("CALCULATE!");
+        calculateButt.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        	}
+        });
 
         javax.swing.GroupLayout fundsPanelLayout = new javax.swing.GroupLayout(fundsPanel);
-        fundsPanel.setLayout(fundsPanelLayout);
         fundsPanelLayout.setHorizontalGroup(
-            fundsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
+        	fundsPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(fundsPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(fundsPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(cruncherScroller, GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+        				.addGroup(fundsPanelLayout.createSequentialGroup()
+        					.addComponent(calculateButt, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(Thing))
+        				.addComponent(btnUpdate))
+        			.addContainerGap())
         );
         fundsPanelLayout.setVerticalGroup(
-            fundsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 404, Short.MAX_VALUE)
+        	fundsPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(fundsPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(cruncherScroller, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+        			.addComponent(btnUpdate)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(fundsPanelLayout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(calculateButt)
+        				.addComponent(Thing))
+        			.addContainerGap())
         );
+        
+        cruncherTable = new JTable();
+        cruncherTable.setModel(new DefaultTableModel(
+        	new Object[][] {
+        		{"Press", "Update", new Double(0.0), null, null},
+        	},
+        	new String[] {
+        		"Name", "Frequency", "Value", "Value within timespan", "Consider"
+        	}
+        ) {
+        	Class[] columnTypes = new Class[] {
+        		String.class, String.class, Double.class, Double.class, Boolean.class
+        	};
+        	public Class getColumnClass(int columnIndex) {
+        		return columnTypes[columnIndex];
+        	}
+        });
+        cruncherTable.getColumnModel().getColumn(0).setResizable(false);
+        cruncherTable.getColumnModel().getColumn(1).setResizable(false);
+        cruncherTable.getColumnModel().getColumn(2).setResizable(false);
+        cruncherTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+        cruncherTable.getColumnModel().getColumn(3).setResizable(false);
+        cruncherTable.getColumnModel().getColumn(3).setPreferredWidth(118);
+        cruncherTable.getColumnModel().getColumn(4).setPreferredWidth(54);
+        cruncherScroller.setViewportView(cruncherTable);
+        fundsPanel.setLayout(fundsPanelLayout);
 
         jTabbedPane.addTab("Funds Breakdown", fundsPanel);
 
@@ -634,5 +735,6 @@ DefaultTableModel model = (DefaultTableModel) expenseTable.getModel();
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JToolBar jToolBar1;
-    // End of variables declaration//GEN-END:variables
+    private JTable cruncherTable;
+    private JButton calculateButt;
 }

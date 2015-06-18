@@ -8,6 +8,7 @@ import javax.swing.table.TableModel;
 import javax.swing.JScrollPane;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -456,10 +457,6 @@ public class ProjectBGUI extends javax.swing.JFrame {
         JButton btnUpdate = new JButton("Import Income/Expences");
         btnUpdate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		//TODO: GET FROM OTHER TABLES
-        		//int lenx = expenseTable.getColumnCount();
-        		
-        		
         		int leny = expenseTable.getRowCount();
         		DefaultTableModel model = (DefaultTableModel) cruncherTable.getModel();
         		TableModel incmodel = incomeTable.getModel();
@@ -479,6 +476,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         			freq = incmodel.getValueAt(i, 1).toString();
         			model.addRow(new Object[]{incmodel.getValueAt(i, 0),freq,new Double(val),new Double(cruncher.FindValueWithinTimePeriod(val, freq)),new Boolean(true)});
         		}
+        		leny = incomeTable.getRowCount();
         		for (int i=0;i<leny;i+=1){
         			System.out.print("Row #"+i+" ");
         			//expenseTable.getModel().getValueAt(i, 0); //Names
@@ -488,17 +486,41 @@ public class ProjectBGUI extends javax.swing.JFrame {
         			freq = incmodel.getValueAt(i, 1).toString();
         			model.addRow(new Object[]{expmodel.getValueAt(i, 0),freq,new Double(val * -1),new Double(cruncher.FindValueWithinTimePeriod(val, freq) * -1),new Boolean(true)});
         		}
-        		
-        		
-               
         	}
         });
         
-        JLabel Thing = new JLabel("You currently have a profit of $1337 this month");
+        JLabel crunchText = new JLabel("Press the CALCULATE button to calculate your balance this month.");
         
         calculateButt = new JButton("CALCULATE!");
         calculateButt.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
+        		
+        		
+        		try{
+        		int leny = cruncherTable.getRowCount();
+        		DefaultTableModel model = (DefaultTableModel) cruncherTable.getModel();
+        		float result = 0;
+        		//model.removeRow(i)
+
+        		for (int i=0;i<leny;i+=1){
+        			System.out.print("Row #"+i+" ");
+        			//expenseTable.getModel().getValueAt(i, 3); //RelValue
+        			Boolean bool = (Boolean) model.getValueAt(i, 4);
+        			if (bool.booleanValue()){
+        				result += ((Double)model.getValueAt(i, 3)).floatValue();
+        			}
+        		}
+        		if (result < 0){
+        			crunchText.setText("You currently have a loss of $"+result+" this month.");
+        		}else{
+        			crunchText.setText("You currently have a profit of $"+result+" this month.");
+        		}
+        		}catch(NullPointerException e){
+    				JOptionPane.showMessageDialog(null,
+    					    "You forgot to press import, didn't you?",
+    					    "NullPointerException",
+    					    JOptionPane.ERROR_MESSAGE);
+        		}
         	}
         });
 
@@ -512,7 +534,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         				.addGroup(fundsPanelLayout.createSequentialGroup()
         					.addComponent(calculateButt, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
         					.addPreferredGap(ComponentPlacement.UNRELATED)
-        					.addComponent(Thing))
+        					.addComponent(crunchText))
         				.addComponent(btnUpdate))
         			.addContainerGap())
         );
@@ -526,7 +548,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(fundsPanelLayout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(calculateButt)
-        				.addComponent(Thing))
+        				.addComponent(crunchText))
         			.addContainerGap())
         );
         

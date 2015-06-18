@@ -452,6 +452,7 @@ public class ProjectBGUI extends javax.swing.JFrame {
         
         JScrollPane cruncherScroller = new JScrollPane();
         
+        FundsCruncher cruncher = new FundsCruncher();
         JButton btnUpdate = new JButton("Import Income/Expences");
         btnUpdate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
@@ -463,6 +464,8 @@ public class ProjectBGUI extends javax.swing.JFrame {
         		DefaultTableModel model = (DefaultTableModel) cruncherTable.getModel();
         		TableModel incmodel = incomeTable.getModel();
         		TableModel expmodel = expenseTable.getModel();
+        		double val = 0;
+        		String freq = "";
         		//model.removeRow(i)
         		for (int i=cruncherTable.getRowCount()-1;i>=0;i-=1){
         			model.removeRow(i);
@@ -472,15 +475,18 @@ public class ProjectBGUI extends javax.swing.JFrame {
         			//expenseTable.getModel().getValueAt(i, 0); //Names
         			//expenseTable.getModel().getValueAt(i, 1); //Frequency
         			//expenseTable.getModel().getValueAt(i, 2); //Value
-        			
-        			model.addRow(new Object[]{incmodel.getValueAt(i, 0),incmodel.getValueAt(i, 1),incmodel.getValueAt(i, 2),new Double(1337),new Boolean(true)});
+        			val = ((Double) incmodel.getValueAt(i, 2)).longValue();
+        			freq = incmodel.getValueAt(i, 1).toString();
+        			model.addRow(new Object[]{incmodel.getValueAt(i, 0),freq,new Double(val),new Double(cruncher.FindValueWithinTimePeriod(val, freq)),new Boolean(true)});
         		}
         		for (int i=0;i<leny;i+=1){
         			System.out.print("Row #"+i+" ");
         			//expenseTable.getModel().getValueAt(i, 0); //Names
         			//expenseTable.getModel().getValueAt(i, 1); //Frequency
         			//expenseTable.getModel().getValueAt(i, 2); //Value
-        			model.addRow(new Object[]{expmodel.getValueAt(i, 0),expmodel.getValueAt(i, 1),new Double(((Double) expmodel.getValueAt(i, 2)).longValue() * -1),new Double(-1337),new Boolean(true)});
+        			val = ((Double) expmodel.getValueAt(i, 2)).longValue();
+        			freq = incmodel.getValueAt(i, 1).toString();
+        			model.addRow(new Object[]{expmodel.getValueAt(i, 0),freq,new Double(val * -1),new Double(cruncher.FindValueWithinTimePeriod(val, freq) * -1),new Boolean(true)});
         		}
         		
         		
